@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="renderer" content="webkit">
+		<title>后台管理中心</title>
+		<link rel="icon" href="/style/images/henu.ico" type="image/x-icon">
+		<link rel="stylesheet" href="/style/css/pintuer.css">
+		<link rel="stylesheet" href="/style/css/admin.css">
+		<link rel="stylesheet" href="/style/css/layer.css">
+		<script src="/style/js/jquery.js"></script>
+		<script src="/style/js/layer.js"></script>
+	</head>
+
+	<body style="background-color:#f2f9fd;">
+		<div class="header bg-main">
+			<div class="logo margin-big-left fadein-top">
+				<h1><img src="/style/images/henu_logo.png" class="radius-circle rotate-hover" height="50" alt="" />河南大学学科建设信息管理系统</h1>
+			</div>
+			<div class="head-l">&nbsp;&nbsp;
+				<a href="##" class="button button-little bg-blue"><span class="icon-wrench"></span> 清除缓存</a> &nbsp;&nbsp;
+				<a class="button button-little bg-red" href="<?=site_url('login/logout')?>"><span class="icon-power-off"></span> 退出登录</a>
+			</div>
+		</div>
+		<div class="leftnav">
+			<div class="leftnav-title"><strong><span class="icon-list"></span>菜单列表</strong></div>
+			<!--管理员功能-->
+			<?php if($identity == 1):?>
+			<h2><span class="icon-cubes"></span>管理员功能</h2>
+			<ul>
+				<li><a href="<?=site_url('manage/article_manage')?>" target="right"><span class="icon-caret-right"></span>ESI论文管理</a></li>
+				<li><a href="<?=site_url('manage/claim_list')?>" target="right"><span class="icon-caret-right"></span>ESI论文引用次数查询</a></li>
+				<li><a href="<?=site_url('manage/nature_list')?>" target="right"><span class="icon-caret-right"></span>Nature Index论文管理</a></li>
+				<li><a href="<?=site_url('manage/index')?>" target="right"><span class="icon-caret-right"></span>人员管理</a>
+
+
+			</ul>
+			<?php endif;?>
+			<!--个人设置-->
+			<h2 class="on"><span class="icon-user"></span>个人设置</h2>
+			<ul style="display:block">
+				<li>
+					<a href="<?php echo site_url('user/per_msg')?>" target="right"><span class="icon-caret-right"></span>个人信息</a>
+				</li>
+				<li>
+					<a href="<?php echo site_url('user/change_passwd')?>" target="right" class="on"><span class="icon-caret-right"></span>修改密码</a>
+				</li>
+
+
+			</ul>
+			<h2><span class="icon-bar-chart-o"></span>ESI论文统计</h2>
+			<ul>
+				<li>
+					<a href="<?php echo site_url().'article/article_claim'?>" target="right"><span class="icon-caret-right"></span>ESI论文认领</a>
+				</li>
+				<li>
+					<a href="<?php echo site_url().'article/my_article'?>" target="right"><span class="icon-caret-right"></span>我的ESI论文</a>
+				</li>
+
+			</ul>
+			<!--nature-->
+			<h2><span class="icon-list-alt"></span>Nature Index<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;论文统计</h2>
+			<ul>
+				<li>
+					<a href="<?=site_url('nature/add_nature')?>" target="right"><span class="icon-caret-right"></span>添加Nature Index论文</a>
+				</li>
+				<li>
+					<a href="<?php echo site_url('nature/my_nature')?>" target="right"><span class="icon-caret-right"></span>我的Nature Index论文</a>
+				</li>
+
+			</ul>
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				$(".leftnav h2").click(function() {
+					$(this).next().slideToggle(200);
+					$(this).toggleClass("on");
+				})
+				$(".leftnav ul li a").click(function() {
+					$("#a_leader_txt").text($(this).text());
+					$(".leftnav ul li a").removeClass("on");
+					$(this).addClass("on");
+				})
+			});
+		</script>
+		<ul class="bread">
+			<li>
+				<a href="#" target="right" class="icon-home"> 首页</a>
+			</li>
+			<li>
+				<a href="##" id="a_leader_txt">网站信息</a>
+			</li>
+			<li><b>当前语言：</b><span style="color:red;">中文</php></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;切换语言：
+				<a href="##">中文</a> &nbsp;&nbsp;
+				<a href="javascript:layer.open({content:'英文系统尚未开放',skin: 'msg',time: 3 })">英文</a>
+
+			</li>
+		</ul>
+		<div class="admin">
+			<iframe scrolling="auto" rameborder="0" src="<?=site_url('user/change_passwd')?>" name="right" width="100%" height="100%"></iframe>
+		</div>
+
+		<script>
+			var full_spell = '<?=$this->session->userdata("full_spell")?>'
+			if(full_spell.length == 0){
+                layer.open({
+                    title: [
+                        '请设置您的姓名全拼',
+                        'background-color: #FF4351; color:#fff; font-size: 30px'
+                    ]
+                    ,content: '<form id="set_full_spell_form" action="/user/set_full_spell" method="post">' +
+						'<div class="body-content">' +
+                        '           <div class="form-group">\n' +
+                        '                <div class="label">\n' +
+                        '                    <label>请设置您的姓名全拼，<span class="text-red" style="font-size: 20px">注意：姓和名字之间要加空格！</span><br>例如：您的名字是<span class="text-red" style="font-size: 18px">杨志颖</span>，请输入<span class="text-red" style="font-size: 18px">yang zhiying</span></label>\n' +
+                        '                </div>\n' +
+                        '                <div class="field">\n' +
+                        '                    <input type="text" class="input w80" value="" name="full_spell" placeholder="请输入您的姓名全拼" data-validate="required:请输姓名全拼" required>\n' +
+
+                        '                </div>\n' +
+                        '            </div>' +
+                        '<button id="submit" class="button bg-main icon-check-square-o" type="submit"> 确定</button>' +
+                        '       </div>' +
+						'</form>',
+					shadeClose: false,
+                });
+
+				$('#set_full_spell_form').submit(function (e) {
+				    var full_spell = $.trim($('input[name="full_spell"]').val());
+					if(full_spell.search(/^[a-z|A-Z]+ {1}[a-z|A-Z]+$/) == -1){
+					    e.preventDefault();
+					    alert('您输入的全拼格式不正确，姓和名之间有且只有一个空格！');
+					}
+                });
+			}
+		</script>
+	</body>
+</html>

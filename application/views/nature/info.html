@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>Nature信息</title>
+    <link rel="stylesheet" href="/style/css/pintuer.css">
+    <link rel="stylesheet" href="/style/css/admin.css">
+    <script src="/style/js/jquery.js"></script>
+    <script src="/style/js/pintuer.js"></script>
+</head>
+
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head"><strong><span class="icon-pencil-square-o"></span> 论文信息</strong></div>
+    <div class="body-content">
+        <form method="post" class="form-x" action="">
+            <div class="form-group">
+                <div class="label">
+                    <label>录入时间：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input" name="add_time" value="<?php echo date('Y-m-d H:i:s', $nature['add_time']) ?>" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>审核状态：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input" name="status" value="<?php if($nature['status'] == 0){echo '审核中';}elseif($nature['status'] == 1){echo '通过审核';}else{'未通过审核';}?>" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>论文题目：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input" name="title" value="<?php echo $nature['title'] ?>" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>第一作者：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input" name="first_author" value="<?php echo $nature['first_author'] ?>" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>通讯作者：</label>
+                </div>
+                <div class="field">
+                    <textarea type="text" class="input" name="surl" style="height:80px" readonly><?php echo $nature['corresponding_author'] ?></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>完整作者：</label>
+                </div>
+                <div class="field">
+                    <textarea type="text" class="input" name="sentitle" style="height:130px" readonly><?php echo $nature['whole_author'] ?></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>第一单位：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input" name="first_unit" value="<?php echo $nature['first_unit'] ?>" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>发表期刊：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input" name="sentitle" value="<?php echo $nature['periodical'] ?>" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>卷：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input" name="sentitle" value="<?php echo $nature['roll'] ?>" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>期：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input" name="s_name" value="<?php echo $nature['period'] ?>" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>页：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input" name="s_phone" value="<?php echo $nature['page'] ?>" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>发表时间：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input" name="s_tel" value="<?php echo date('Y-m-d', $nature['publish_time'])?>" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>文章电子版：</label>
+                </div>
+                <div class="field">
+                    <a class="button border-main" href="<?=$nature['article_pdf']?>" target="_blank"><span class="icon-eye"></span> 点击查看文章电子版</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>收录证明：</label>
+                </div>
+                <div class="field">
+                    <a class="button border-main" href="<?=$nature['include_pdf']?>" target="_blank"><span class="icon-eye"></span> 点击查看收录证明</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>审核意见：</label>
+                </div>
+                <div class="field">
+                    <textarea type="text" class="input" id="comment" name="comment" style="height:130px"><?php echo $nature['comment'] ?></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label></label>
+                </div>
+                <div class="field">
+                    <a href="javascript:window.history.go(-1)" class="button bg-main icon-arrow-left" type="button" > 返回</a>
+                    <?php if($this->session->userdata('identity') == 1):?>
+                        <?php if($nature['status'] == 1):?>
+                            <a href="javascript:check_nature(1)" class="button bg-main icon-check-square-o" type="button" disabled="true"> 已通过审核</a>
+                        <?php else:?>
+                            <a href="javascript:check_nature(1)" class="button bg-main icon-check-square-o" type="button" > 通过</a>
+                        <?php endif?>
+                    <a href="javascript:check_nature(-1)" class="button border-red icon-mail-reply-all" type="button" > 驳回</a>
+                    <?php endif;?>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    function check_nature(status){
+        var data = {};
+        data.status = status;
+        data.comment = '';
+        var submit = false;
+        if(!$('#comment').val()){ //无审核意见，询问是否无意间提交
+            if(confirm('您未填写审核意见，是否继续提交')){ //无意间提交
+                submit = true;
+            }
+        }else{ //有审核意见，提交
+            submit = true;
+            data.comment = $('#comment').val();
+        }
+        if(submit){ //判断是否达到提交条件
+            $.post("<?=site_url('manage/nature_check/').$nature['id']?>", data, function(data){
+                if(data.code == 200){
+                    alert('提交成功');
+                    window.history.go(-1);
+                }else{
+                    alert(data.message);
+                }
+            }, 'json');
+        }
+
+    }
+</script>
+</body>
+
+</html>

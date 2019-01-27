@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>添加Nature</title>
+    <link rel="stylesheet" href="/style/css/pintuer.css">
+    <link rel="stylesheet" href="/style/css/admin.css">
+    <link rel="stylesheet" href="/style/css/luluui/Input.css">
+    <link rel="stylesheet" href="/style/css/luluui/Button.css">
+    <link rel="stylesheet" href="/style/css/luluui/Date.css">
+    <link rel="stylesheet" href="/style/css/luluui/Loading.css">
+    <link rel="stylesheet" href="/style/css/luluui/Dialog.css">
+
+    <style>.ui-dialog-footer{box-sizing: initial}</style>
+</head>
+
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>增加内容</strong></div>
+    <div class="body-content">
+        <form method="post" id="my_form" class="form-x" action="<?=site_url('nature/add_nature')?>" enctype="multipart/form-data">
+            <div class="form-group">
+                <div class="label">
+                    <span class="required">* </span><label>文章标题：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input" value="" name="title" placeholder="请输入文章标题" data-validate="required:请输入标题" />
+                    <div class="tips"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <span class="required">* </span><label>第一作者：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" value="" name="first_author" placeholder="请输入第一作者" data-validate="required:请输入第一作者" />
+                    <div class="tips"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <span class="required">* </span><label>通讯作者：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input" value="" name="corresponding_author" placeholder="请输入通讯作者" data-validate="required:请输入通讯作者" />
+                    <div class="tips"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <span class="required">* </span><label>完整作者：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input" value="" name="whole_author" placeholder="请输入完整作者" data-validate="required:请输入完整作者" />
+                    <div class="tips"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <span class="required">* </span><label>第一单位：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" value="" name="first_unit" placeholder="请输入第一单位" data-validate="required:请输入第一单位" />
+                    <div class="tips"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <span class="required">* </span><label>发表期刊：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" value="" name="periodical" placeholder="请输入发表期刊" data-validate="required:请输入发表期刊" />
+                    <div class="tips"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <span class="required">* </span><label>发表时间：</label>
+                </div>
+                <div class="field">
+                    <span class="ui-input ui-date-input"><input name="publish_time" id="time" type="date" ></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>卷：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" value="" name="roll"/>
+                    <div class="tips"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>期：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" value="" name="period"/>
+                    <div class="tips"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>页：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" value="" name="page"/>
+                    <div class="tips"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <span class="required">* </span><label>文章电子版：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input tips file_str" style="width:25%; float:left;" readonly/>
+                    <input type="button" class="button bg-blue margin-left upload_btn" value="+ 浏览上传" style="float:left;">
+                    <input type="file" class="file_input" style="display: none;" name="article_pdf" accept="application/pdf">
+                    <div class="tips">请上传文章电子版PDF文件</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <span class="required">* </span><label>收录证明：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input tips file_str" style="width:25%; float:left;" readonly/>
+                    <input type="button" class="button bg-blue margin-left upload_btn" value="+ 浏览上传" style="float:left;">
+                    <input type="file" class="file_input" style="display: none;" name="include_pdf" accept="application/pdf">
+                    <div class="tips">请上传收录证明，格式为PDF</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="label">
+                    <label></label>
+                </div>
+                <div class="field">
+                    <button id="submit" class="button bg-main icon-check-square-o" type="submit"> 提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script src="/style/js/jquery.js"></script>
+<script src="/style/js/pintuer.js"></script>
+<script src="/style/js/DateTime.js"></script>
+<script src="/style/js/Loading.js"></script>
+<script src="/style/js/Dialog.js"></script>
+<script>
+    /*new Dialog().alert('操作成功！', {
+        type: 'success',
+        buttons: [{events: {
+            click:function(){
+                window.location.href='<?=site_url("natire/my_nature")?>';
+            }
+        }}],
+        onShow: function(){
+            console.log('onShow');
+        },
+        onRemove: function(){
+            console.log('onRemove');
+            window.location.href = '<?=site_url("natire/my_nature")?>';
+        },
+        onHide: function(){
+            console.log('onHide');
+        }
+    });*/
+
+    $('#time').dateTime('auto');
+    $('.upload_btn').click(function(){
+        $(this).next().click();
+    });
+
+    $('.file_input').change(function(){
+        var str = $(this).val();
+        $(this).prevAll('.file_str').val(str);
+    });
+
+    $('#my_form').submit(function(e){
+        e.preventDefault(); //阻止表单提交
+        //console.log(new FormData($('#my_form')[0]));return;
+        var loading = new Dialog();
+        loading.loading();
+        if(!validate()){
+            loading.hide();
+            return;
+        }
+        var form_data = new FormData($('#my_form')[0]);
+        $.ajax({
+            url: '<?=site_url("nature/add_nature")?>',
+            type: 'POST',
+            dataType: 'json',
+            data: form_data,
+            cache: false,
+            traditional: true, //用传统的方式来序列化数据
+            contentType: false,
+            processData: false,
+            success: function(data){
+                loading.hide();
+                if(data.code == 200){
+                    new Dialog().alert('操作成功！', {
+                        type: 'success',
+                        buttons: [
+                            {
+                                events: {
+                                    click:function(){
+                                        window.location.href='<?=site_url("nature/my_nature")?>';
+                                    }
+                                }
+                            }
+                        ]
+                    });
+                }else{
+                    new Dialog().alert('操作失败！'+data.message, {
+                        type: 'warning'
+                    });
+                }
+            },
+            error: function(){
+                loading.hide();
+                new Dialog().alert('操作失败，请检查您的网络！', {
+                    type: 'warning'
+                });
+            }
+        });
+
+    });
+
+    function validate(){
+        if(!$('input[name="title"]').val()){
+            alert('请输入文章标题！');
+            return false;
+        }
+
+        if(!$('input[name="first_author"]').val()){
+            alert('请输入文章第一作者！');
+            return false;
+        }
+
+        if(!$('input[name="corresponding_author"]').val()){
+            alert('请输入通讯作者！');
+            return false;
+        }
+
+        if(!$('input[name="whole_author"]').val()){
+            alert('请输入完整作者！');
+            return false;
+        }
+
+        if(!$('input[name="first_unit"]').val()){
+            alert('请输入第一单位！');
+            return false;
+        }
+
+        if(!$('input[name="periodical"]').val()){
+            alert('请输入发表期刊名称！');
+            return false;
+        }
+
+        if(!$('input[name="publish_time"]').val()){
+            alert('请输入发表时间！');
+            return false;
+        }
+
+        if(!$('input[name="publish_time"]').val()){
+            alert('请输入发表时间！');
+            return false;
+        }
+
+        if(!$('input[name="article_pdf"]').val()){
+            alert('请上传文章电子版pdf文件！');
+            return false;
+        }
+
+        if(!$('input[name="include_pdf"]').val()){
+            alert('请上传收录证明pdf文件！');
+            return false;
+        }
+        return true;
+    }
+</script>
+</html>

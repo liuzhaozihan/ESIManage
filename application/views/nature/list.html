@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title></title>
+    <link rel="stylesheet" href="/style/css/pintuer.css">
+    <link rel="stylesheet" href="/style/css/admin.css">
+    <script src="/style/js/jquery.js"></script>
+    <script src="/style/js/pintuer.js"></script>
+    <style type="text/css">
+        .long_td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder"> 内容列表</strong> <a href="" style="float:right; display:none;">添加字段</a></div>
+    <form method="post" action="<?php echo site_url().'article/search_article' ?>" id="serchform">
+        <div class="padding border-bottom">
+            <ul class="search" style="padding-left:10px;">
+                <li>搜索方式：
+                    <a class="button border-main" href="<?=site_url('nature/my_nature/1')?>"><span class="icon-check-circle"></span> 通过审核</a>
+                    <a class="button border-green" href="<?=site_url('nature/my_nature/0')?>"><span class="icon-spinner"></span> 正在审核</a>
+                    <a class="button border-red" href="<?=site_url('nature/my_nature/-1')?>"><span class="icon-times-circle"></span> 未通过</a>
+                </li>
+                <li>共检索到：
+                    <?php echo $count ?>&nbsp;&nbsp;篇</li>
+            </ul>
+        </div>
+    </form>
+
+
+    <table class="table table-hover text-center">
+        <tr>
+            <th width="120">第一作者</th>
+            <th>通讯作者</th>
+            <th>第一单位</th>
+            <th>文章题目</th>
+            <th>发表期刊</th>
+            <th width="100">发表时间</th>
+            <th>卷</th>
+            <th>期</th>
+            <th>页</th>
+            <th>审核状态</th>
+            <th width="180">操作</th>
+        </tr>
+        <?php foreach($nature as $n):?>
+        <tr>
+            <td>
+                <?php echo $n['first_author'] ?>
+            </td>
+            <td title="<?php echo $n['corresponding_author'] ?>">
+                <?php echo $n['corresponding_author'] ?>
+            </td>
+            <td>
+                <?php echo $n['first_unit'] ?>
+            </td>
+            <td title="<?php echo $n['title'] ?>">
+                <?php echo $n['title'] ?>
+            </td>
+            <td>
+                <?php echo $n['periodical'] ?>
+            </td>
+            <td>
+                <?php echo date('Y-m-d', $n['publish_time'])?>
+            </td>
+            <td>
+                <?php echo $n['roll'] ?>
+            </td>
+            <td>
+                <?php echo $n['period'] ?>
+            </td>
+            <td>
+                <?php echo $n['page'] ?>
+            </td>
+            <td>
+                <?php if($n['status'] ==0):?>
+                审核中
+                <?php elseif($n['status'] == 1):?>
+                <span style="color: #01cf97;">通过审核</span>
+                <?php else:?>
+                <span style="color: #a2a9b6">未通过审核</span>
+                <?php endif?>
+            </td>
+            <td>
+                <div class="button-group">
+                    <a class="button border-main" href="<?=site_url('nature/edit/'.$n['id'])?>"><span class="icon-edit"></span> 编辑</a>
+                    <a class="button border-main" href="<?=site_url('nature/nature_info/'.$n['id'])?>"><span class="icon-eye"></span> 查看</a>
+                </div>
+            </td>
+        </tr>
+        <?php endforeach ?>
+        <tr>
+            <td colspan="14" align="center">
+                <div class="pagelist"><?php if($links!=null){echo $links;}?></div>
+            </td>
+        </tr>
+    </table>
+
+
+</div>
+</body>
+
+</html>

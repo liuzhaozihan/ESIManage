@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/style/css/pintuer.css">
+<link rel="stylesheet" href="/style/css/admin.css">
+<link rel="stylesheet" href="/style/layer/theme/default/layer.css">
+<script src="/style/js/jquery.js"></script>
+<script src="/style/js/pintuer.js"></script>
+    <style type="text/css">
+        .long_td{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+
+<form method="post" action="<?=site_url('manage/search_article_claim')?>" id="listform">
+  <div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder"> 内容列表</strong> <a href="" style="float:right; display:none;">添加字段</a></div>
+    <div class="padding border-bottom">
+      <ul class="search" style="padding-left:10px;">
+        <li style="line-height: 40px;">搜索：</li>
+        <li>统计年份：
+          <select name="begin_time" class="input" id="begin_time" onchange="Change_lable1()"  style="width:90px; line-height:17px; display:inline-block">
+              <?php for($i=2017;$i<=s_year();$i++ ):  ?>
+                 <option <?=isset($begin_time)&&$begin_time==$i?'selected':'' ?> value="<?=$i?>"><?=$i?></option>
+              <?php endfor ?>
+          </select>
+          &nbsp;&nbsp;
+        </li>
+
+          <li>搜索方式：
+            <select name="select_mothod" class="input" style="width:200px; line-height:17px;display:inline-block" onchange="changesearch()">
+                <option <?=isset($select_mothod)&&$select_mothod=='0'?'selected':'' ?> value="0">学院单位</option>
+                <option <?=isset($select_mothod)&&$select_mothod=='1'?'selected':'' ?> value="1">教师工号</option>
+            </select>
+          </li>
+
+          <li>
+            <input type="text" placeholder="请输入搜索关键字" name="keywords" class="input" style="width:250px; line-height:17px;display:inline-block" value="<?=isset($keywords)?$keywords:'' ?>" />
+            <input type="submit"  class="button border-main icon-search"  value="搜索"/>
+          </li>
+          <li>
+              共检索到：<?=isset($count)?$count:''?> 篇
+          </li>
+          <li style="float: right;">
+              <a class="button bg-yellow margin-left icon-cloud-download"  href="javascript:_Export()" <?=isset($keywords)? '':'disabled' ?> > 导出表格</a>
+          </li>
+      </ul>
+    </div>
+    <table class="table table-hover text-center" style="table-layout: fixed;">
+        <tr>
+            <th width="250">论文题目</th>
+            <th width="220">作者</th>
+            <th width="220">来源（期刊名称）</th>
+            <th >出版年份</th>
+            <th>学科领域</th>
+            <th>统计时间</th>
+            <th width="150"><span id="lable1" ><?=isset($begin_time)?$begin_time:''?></span>年新增引用次数</th>
+
+        </tr>
+
+         <?php if(isset($article)): ?>
+            <?php foreach($article as $v): ?>
+                <tr style="height: 45px">
+                    <td  class="long_td"><?php echo $v['title'] ?></td>
+                    <td class="long_td"><?php echo $v['author'] ?></td>
+                    <td class="long_td"><?php echo $v['source'] ?></td>
+                    <td><?php echo $v['year'] ?></td>
+                    <td class="long_td"><?php echo $v['subject'] ?></td>
+                    <td><?php echo $v['update_time'] ?></td>
+                    <td class="long_td"><?php echo $v['increase_claim'] ?></td>
+                </tr>
+            <?php endforeach ?>
+         <?php endif?>
+    </table>
+  </div>
+</form>
+</body>
+<script src="/style/layer/layer.js"></script>
+<script type="text/javascript">
+
+   if($("table tr").length<2)
+   {
+       layer.msg('亲，请搜索...', {icon: 4,time:3600*1000});
+   }
+    function Change_lable1() {
+        var begin_time=$("#begin_time option:selected").text();
+        $("#lable1").html(begin_time);
+    }
+    function Change_lable2() {
+        var end_time=$("#end_time option:selected").text();
+        $("#lable2").html(end_time);
+    }
+    function _Export() {
+        var path="<?php echo site_url('manage/export_excel_claim')?>";
+        var path2="<?php echo site_url('manage/search_article_claim')?>";
+        $('#listform').attr("action", path).submit();
+        $('#listform').attr("action", path2);
+
+    }
+</script>
+</html>

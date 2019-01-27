@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/style/css/pintuer.css">
+<link rel="stylesheet" href="/style/css/admin.css">
+    <link rel="stylesheet" href="/style/css/layer.css">
+
+<script src="/style/js/jquery.js"></script>
+    <script src="/style/js/layer.js"></script>
+<script src="/style/js/pintuer.js"></script>
+
+    <style type="text/css">
+        .long_td{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    layer.open({
+        type: 2,
+        content: 'Loading...',
+        shadeClose: false,
+    });
+</script>
+  <div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder"> 文章管理</strong> </div>
+   <form method="get" action="<?php echo site_url().'manage/search_article' ?>" id="serchform">
+    <div class="padding border-bottom">
+        <ul class="search" style="padding-left:10px;">
+            <li>
+                共检索到：<?php echo $count ?>&nbsp;&nbsp;篇&nbsp;&nbsp;&nbsp;&nbsp; <?php if(isset($unclaimed)){ echo '已认领：';echo $count-$unclaimed;echo'&nbsp;篇';echo '&nbsp;&nbsp;&nbsp;&nbsp;未认领：';echo $unclaimed;echo '&nbsp;篇';} ?>
+            </li>
+            <li style="float: right;">
+                <a class="button bg-yellow margin-left icon-cloud-download" href="javascript:export_excel()" <?=isset($keywords)?'':'disabled'?>> 导出表格</a>
+            </li>
+            <li style="float: right;">
+                <a class="button bg-blue margin-left" href="<?php echo site_url().'upload_file/index' ?>">+ 更新文章</a>
+            </li>
+
+        </ul>
+      <ul class="search" style="padding-left:10px;">
+          <li>出版年份：
+              <select name="year" class="input"  style="width:80px; line-height:17px; display:inline-block" >
+                  <option value="—">—</option>
+                  <?php  for($i=s_year()-9;$i<=s_year();$i++ ):?>
+                  <option <?=isset($year)&&$year==$i ?'selected':''?> value="<?=$i ?>"><?=$i ?></option>
+                  <?php endfor ?>
+              </select>
+          </li>
+
+          <li>
+              <div class="form-group" style="overflow: hidden;margin-bottom: 0px;">
+                  <div class="label"  style="float: left;padding-bottom: 0px;line-height: 45px" >
+                      <label>状态：</label>
+                  </div>
+                  <div class="field" style="float: left;">
+                      <div class="button-group radio">
+                          <label class="button <?=!isset($status)||$status=='0'?'active':''?>">
+                              <span class="icon icon-check"></span>
+                              <input name="status"  value="0" type="radio" <?=!isset($status)||$status=='0'?'checked':''?> >ALL
+                          </label>
+                          <label class="button <?=isset($status)&&$status=='1'?'active':''?>">
+                              <span class="icon icon-check"></span>
+                              <input name="status" value="1" type="radio" <?=isset($status)&&$status=='1'?'checked':''?> >已认领
+                          </label>
+                          <label class="button <?=isset($status)&&$status=='2'?'active':''?> ">
+                              <span class="icon icon-check"></span>
+                              <input name="status" value="2"  type="radio" <?=isset($status)&&$status=='2'?'checked':''?> >未认领
+                          </label>
+                      </div>
+                  </div>
+              </div>
+          </li>
+          <li>搜索方式：
+              <select name="select_mothod" class="input"  style="width:120px; line-height:17px; display:inline-block" >
+                  <option <?=isset($type)&&$type=='0'?'selected':''?> value="0">作者姓名</option>
+                  <option <?=isset($type)&&$type=='1'?'selected':''?> value="1">文章标题</option>
+                  <option <?=isset($type)&&$type=='2'?'selected':''?> value="2">学科领域</option>
+                  <option <?=isset($type)&&$type=='3'?'selected':''?> value="3">教师工号</option>
+                  <option <?=isset($type)&&$type=='4'?'selected':''?> value="4">学院单位</option>
+              </select>
+          </li>
+          <li>
+              <input type='text' placeholder='请输入搜索关键字' name='keywords' class='input' style='width:250px; line-height:17px;display:inline-block' value="<?=isset($keywords)?$keywords:''?>"/>
+          <input type="submit" value="搜索"  class="button border-main icon-search loading"/>
+          <li/>
+      </ul>
+    </div>
+  </form>
+
+<form method="post" action="<?php echo site_url().'manage/reset_claim_much' ?>" id="listform">
+    <table class="table table-hover text-center" style="table-layout: fixed;">
+      <tr>
+          <th width="100" style="text-align:left; padding-left:20px;">状态</th>
+          <th width="180">论文题目</th>
+          <th width="100">作者</th>
+          <th width="120">作者单位</th>
+          <th width="120">来源（期刊名称）</th>
+          <th>卷</th>
+          <th>期</th>
+          <th width="50">页</th>
+          <th width="80">出版年份</th>
+          <th width="80">学科领域</th>
+          <th width="80">影响因子</th>
+          <th width="80">统计年份</th>
+          <th width="100">新增引用次数</th>
+          <th width="100">DOI</th>
+          <th  width="100">操作</th>
+      </tr>
+        <?php foreach($article as $v):?>
+        <tr>
+            <td style="text-align:left; padding-left:20px;">
+                <?php if($v['owner']==null): ?>
+                <input type='checkbox' name='checkbox[]' value="<?=$v['accession_number'] ?>"/>未认领
+                <?php else:?>
+                <input type='checkbox' name='checkbox[]' value="<?=$v['accession_number'] ?>"/>已认领
+                <?php endif ?>
+
+            </td>
+            <td title="<?=$v['title'] ?>" class="long_td"><?php echo $v['title'] ?></td>
+            <td title="<?=$v['author']?>" class="long_td"><?php echo $v['author'] ?></td>
+            <td title="<?=$v['address']?>" class="long_td"><?php echo $v['address'] ?></td>
+            <td title="<?=$v['source']?>" class="long_td"><?php echo $v['source'] ?></td>
+            <td title="<?=$v['roll']?>"><?php echo $v['roll'] ?></td>
+            <td title="<?=$v['period']?>"><?php echo $v['period'] ?></td>
+            <td title="<?=$v['page']?>" class="long_td"><?php echo $v['page'] ?></td>
+            <td title="<?=$v['year']?>"><?php echo $v['year'] ?></td>
+            <td title="<?=$v['subject']?>" class="long_td"><?php echo $v['subject'] ?></td>
+            <td title="<?=$v['impact_factor']?>"><?php echo $v['impact_factor'] ?></td>
+            <td title="<?=$v['update_time']?>"><?php echo $v['update_time'] ?></td>
+            <td title="<?=$v['increase_claim']?>"><?php echo $v['increase_claim'] ?></td>
+            <td title="<?=$v['doi']?>" class="long_td"><?php echo $v['doi'] ?></td>
+            <td>
+                <div class="button-group">
+                    <a class="button border-main" href="<?php echo site_url().'manage/check_article/'.$v['accession_number']?>" ><span class="icon-edit"></span> 查看</a>
+                </div>
+            </td>
+  </tr>
+
+        <?php endforeach ?>
+      <tr>
+        <td colspan="15" style="text-align:left; padding:19px 0;padding-left:20px;"><input type="checkbox" id="checkall"/>全选&nbsp;&nbsp;&nbsp
+            <!--<a href="javascript:void(0)" class="button border-red icon-trash-o" style="padding:5px 15px;" onclick="DelSelect()">认领</a>-->
+            <input type="submit" onclick="wait()" value="重置" class="button border-red " style="padding:5px 15px;" />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="15"> <?php if($links!=null){echo $links;}else{ } ?></td>
+      </tr>
+    </table>
+</form>
+<script type="text/javascript">
+    function wait() {
+        layer.open({
+            type: 2,
+            content: '正在执行操作...',
+            shadeClose:false
+        });
+    }
+//全选
+$("#checkall").click(function(){ 
+  $("input[name='checkbox[]']").each(function(){
+	  if (this.checked) {
+		  this.checked = false;
+	  }
+	  else {
+		  this.checked = true;
+	  }
+  });
+})
+var msg="您确定要删除吗？";
+function del(){
+    if(confirm(msg)){
+        return true;
+    }else{
+        return false;
+    }
+}
+var msg1="您确定要重置吗？";
+function rset() {
+    if(confirm(msg1)){
+        return true;
+    }else{
+        return false;
+    }
+}
+function export_excel() {
+    var url="<?php echo site_url().'Manage/export_excel' ?>";
+    var url2="<?php echo site_url().'manage/search_article' ?>";
+    $("#serchform").attr("action",url).submit();
+    $("#serchform").attr("action",url2);
+}
+layer.closeAll();
+</script>
+</body>
+</html>

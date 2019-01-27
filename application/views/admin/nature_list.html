@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title></title>
+    <link rel="stylesheet" href="/style/css/pintuer.css">
+    <link rel="stylesheet" href="/style/css/admin.css">
+    <script src="/style/js/jquery.js"></script>
+    <script src="/style/js/pintuer.js"></script>
+    <style type="text/css">
+        .long_td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder"> 内容列表</strong> <a href="" style="float:right; display:none;">添加字段</a></div>
+
+        <div class="padding border-bottom">
+            <ul class="search" style="padding-left:10px;">
+                <li>搜索方式：
+                    <a class="button border-main" href="javascript:nature_status(1)"><span class="icon-check-circle"></span> 通过审核</a>
+                    <a class="button border-green" href="javascript:nature_status(0)"><span class="icon-spinner"></span> 正在审核</a>
+                    <a class="button border-red" href="javascript:nature_status(-1)"><span class="icon-times-circle"></span> 未通过</a>
+                </li>
+                <li>搜索方式：
+                    <select id="search_type" name="select_mothod" class="input"  style="width:120px; line-height:17px; display:inline-block" >
+                        <option <?=isset($type) && $type==0?'selected':''?> value="0">第一作者</option>
+                        <option <?=isset($type) && $type==1?'selected':''?> value="1">通讯作者</option>
+                        <option <?=isset($type) && $type==2?'selected':''?> value="2">文章题目</option>
+                        <option <?=isset($type) && $type==3?'selected':''?> value="3">发表期刊</option>
+                        <option <?=isset($type) && $type==4?'selected':''?> value="4">教师工号</option>
+                    </select>
+                </li>
+                <li>
+                    <input type='text' placeholder='请输入搜索关键字' name='keywords' class='input' style='width:250px; line-height:17px;display:inline-block' value="<?=isset($keywords)?$keywords:''?>">
+                    <a class="button border-main" href="javascript:search()" role="button"><span class="icon-search"></span> 搜索</a>
+                </li>
+                <li>共检索到：<?php echo $count ?>&nbsp;&nbsp;篇</li>
+                <li style="float: right;"> <a class="button bg-yellow margin-left icon-cloud-download" href="javascript:hidden_form()" <?=isset($keywords)||$status!='all'?'':'disabled'?>> 导出表格</a></li>
+            </ul>
+        </div>
+
+
+
+    <table class="table table-hover text-center">
+        <tr>
+            <th>第一作者</th>
+            <th>通讯作者</th>
+            <th>第一单位</th>
+            <th>文章题目</th>
+            <th>发表期刊</th>
+            <th>发表时间</th>
+            <th>卷</th>
+            <th>期</th>
+            <th>页</th>
+            <th>审核状态</th>
+            <th width="180">操作</th>
+        </tr>
+        <?php foreach($nature as $n):?>
+        <tr>
+            <td class="long_td">
+                <?php echo $n['first_author'] ?>
+            </td>
+            <td class="long_td">
+                <?php echo $n['corresponding_author'] ?>
+            </td>
+            <td class="long_td">
+                <?php echo $n['first_unit'] ?>
+            </td>
+            <td class="long_td">
+                <a style="color: #0ae;text-decoration: underline;" href="<?=site_url('nature/nature_info/'.$n['id'])?>" title="<?php echo $n['title'] ?>"><?php echo $n['title'] ?></a>
+            </td>
+            <td class="long_td">
+                <?php echo $n['periodical'] ?>
+            </td>
+            <td class="long_td">
+                <?php echo date('Y-m-d', $n['publish_time'])?>
+            </td>
+            <td class="long_td">
+                <?php echo $n['roll'] ?>
+            </td>
+            <td>
+                <?php echo $n['period'] ?>
+            </td>
+            <td>
+                <?php echo $n['page'] ?>
+            </td>
+            <td>
+                <?php if($n['status'] ==0):?>
+                审核中
+                <?php elseif($n['status'] == 1):?>
+                <span style="color: #01cf97;">通过审核</span>
+                <?php else:?>
+                <span style="color: #a2a9b6">未通过审核</span>
+                <?php endif?>
+            </td>
+            <td>
+                <div class="button-group">
+                    <a class="button border-green" href="<?=site_url('nature/edit/'.$n['id'])?>"><span class="icon-edit"></span> 编辑</a>
+                    <a class="button border-red" href="javascript:nature_delete(<?=$n['id']?>)"><span class="icon-trash-o"></span> 删除</a>
+                </div>
+            </td>
+        </tr>
+        <?php endforeach ?>
+        <tr>
+            <td colspan="14" align="center">
+                <div class="pagelist"><?php if(isset($links)){echo $links;}?></div>
+            </td>
+        </tr>
+    </table>
+</div>
+<form  action="" method="get" name="hidden_from" id="hidden_from">
+      <input type="hidden" value="<?=isset($status)?$status:''?>" name="status">
+      <input type="hidden" value="<?=isset($type)?$type:'' ?>" name="type">
+      <input type="hidden" value="<?=isset($keywords)?$keywords:''?>" name="keywords">
+</form>
+</body>
+<script>
+    function search(){
+        var type = $.trim($('#search_type').val());
+        var keywords = $.trim($('input[name="keywords"]').val());
+        location.href = '<?=site_url("manage/nature_search/")?>'+type+'/'+keywords;
+    }
+
+    function nature_status(status){
+
+        if($('input[name="keywords"]').val()){ //搜索框有值
+            var keywords = $.trim($('input[name="keywords"]').val());
+            var type = $.trim($('#search_type').val());
+            var url = '<?=site_url("manage/nature_search/")?>'+type+'/'+keywords+'/'+status;
+        }else{
+            var url = '<?=site_url("manage/nature_list/")?>'+status;
+        }
+
+        location.href = url;
+    }
+
+    function hidden_form() {
+        var url="<?php echo site_url('manage/export_excel_nature') ?>";
+        $("#hidden_from").attr("action",url).submit();
+
+    }
+
+    //nature index 删除
+    function nature_delete(id){
+        if(confirm("确定要删除吗？")){
+            location.href = "<?=site_url('manage/nature_delete/')?>"+id;
+        }
+    }
+</script>
+</html>

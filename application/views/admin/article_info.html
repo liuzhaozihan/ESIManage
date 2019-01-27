@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>论文信息</title>
+    <link rel="stylesheet" href="/style/css/pintuer.css">
+    <link rel="stylesheet" href="/style/css/admin.css">
+    <script src="/style/js/jquery.js"></script>
+    <script src="/style/js/pintuer.js"></script>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head"><strong><span class="icon-pencil-square-o"></span> 论文信息</strong></div>
+  <div class="body-content">
+    <form method="post" class="form-x" action="">
+      <div class="form-group">
+        <div class="label">
+          <label>论文题目：</label>
+        </div>
+        <div class="field">
+          <input readonly type="text" class="input" name="stitle" value="<?php echo $article[0]['title'] ?>" />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>论文作者：</label>
+        </div>
+        <div class="field">
+          <textarea  readonly type="text" class="input" name="surl" style="height:80px" ><?php echo $article[0]['author'] ?></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>作者单位：</label>
+        </div>
+        <div class="field">
+          <textarea  readonly type="text" class="input" name="sentitle" style="height:130px" /><?php echo $article[0]['address'] ?></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>来源（期刊名称)：</label>
+        </div>
+        <div class="field">
+          <input  readonly type="text" class="input" name="sentitle" value="<?php echo $article[0]['source'] ?>"></input>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>卷：</label>
+        </div>
+        <div class="field">
+          <input  readonly type="text" class="input" name="sentitle" value="<?php echo $article[0]['roll'] ?>"></input>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>期：</label>
+        </div>
+        <div class="field">
+          <input  readonly type="text" class="input" name="s_name" value="<?php echo $article[0]['period'] ?>" />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>页：</label>
+        </div>
+        <div class="field">
+          <input  readonly type="text" class="input" name="s_phone" value="<?php echo $article[0]['page'] ?>" />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>出版年份：</label>
+        </div>
+        <div class="field">
+          <input readonly  type="text" class="input" name="s_tel" value="<?php echo $article[0]['year'] ?>" />
+        </div>
+      </div>
+      <div class="form-group" >
+        <div class="label">
+          <label>学科领域：</label>
+        </div>
+        <div class="field">
+          <input readonly  type="text" class="input" name="s_400" value="<?php echo $article[0]['subject'] ?>" />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>影响因子：</label>
+        </div>
+        <div class="field">
+          <input readonly  type="text" class="input" name="s_fax" value="<?php echo $article[0]['impact_factor'] ?>" />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>总引用次数：</label>
+        </div>
+        <div class="field">
+          <input  readonly type="text" class="input" name="s_qq" value="<?php echo $article[0]['times_cited'] ?>" />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label><?=$article[0]['update_time']?>新增引用次数：</label>
+        </div>
+        <div class="field">
+          <input  readonly type="text" class="input" name="s_qq" value="<?php echo $article[0]['increase_claim'] ?>" />
+        </div>
+      </div>
+      <div class="form-group" >
+        <div class="label">
+          <label>DOI：</label>
+        </div>
+        <div class="field">
+          <input readonly  type="text" class="input" name="s_qqu" value="<?php echo $article[0]['doi'] ?>" />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label></label>
+        </div>
+        <div class="field">
+          <a href="javascript:history.back(-1)" class="button bg-main icon-check-square-o" type="button" > 返回</a>
+          <a class="button border-main" href="<?=site_url('article/claim/'.$article[0]['accession_number']) ?>" onclick="return conf()" <?=($article[0]['owner']==null)?'':'disabled' ?>><span class="icon-pencil-square-o"></span> 认领</a>
+
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script type="text/javascript">
+    var msg1="您确定要认领？";
+    function conf() {
+        if (confirm(msg1)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+</body></html>

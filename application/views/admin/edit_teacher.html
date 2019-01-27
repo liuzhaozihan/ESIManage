@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title></title>
+    <link rel="stylesheet" href="/style/css/pintuer.css">
+    <link rel="stylesheet" href="/style/css/admin.css">
+    <script src="/style/js/jquery.js"></script>
+    <script src="/style/js/pintuer.js"></script>
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder"> 添加用户</strong></div>
+</div>
+<div class="panel admin-panel margin-top" id="add">
+    <div class="body-content">
+        <form method="post" class="form-x" action="<?=site_url('manage/fill/'.$job_number)?>">
+            <div class="form-group">
+                <div class="label">
+                    <label ><span class="text-dot">*</span>工号：</label>
+                </div>
+                <div class="field">
+                    <span style="line-height: 2.6"> <?=isset($job_number)?$job_number:''?></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label for="name"><span class="text-dot">*</span>姓名：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" id="name" name="name" size="50" value="<?=isset($name)?$name:''?>" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label for="full_spell"><span class="text-dot">*</span>姓名全拼：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" id="full_spell" name="full_spell" size="50" value="<?=isset($full_spell)?$full_spell:''?>" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label><span class="text-dot">*</span>性别：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" name="gender" size="50" value="<?=isset($gender)?$gender:''?>"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label for="academy"><span class="text-dot">*</span>院系/单位：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" id="academy" name="academy" size="50" value="<?=isset($academy)?$academy:''?>"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label><span class="text-dot">*</span>出生日期：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" name="birthday" size="50" value="<?=isset($birthday)?$birthday:''?>"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label><span class="text-dot">*</span>学历：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" name="edu_background" size="50" value="<?=isset($edu_background)?$edu_background:''?>"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label><span class="text-dot">*</span>学位：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" name="degree" size="50" value="<?=isset($degree)?$degree:''?>"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label><span class="text-dot">*</span>职称：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" name="job_title" size="50" value="<?=isset($job_title)?$job_title:''?>"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label><span class="text-dot">*</span>职称级别：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" name="job_title_rank" size="50" value="<?=isset($job_title_rank)?$job_title_rank:''?>"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label><span class="text-dot">*</span>职称系列：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" name="job_title_series" size="50" value="<?=isset($job_title_series)?$job_title_series:''?>"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label></label>
+                </div>
+                <div class="field">
+                    <button class="button bg-main" type="submit"><span class="icon-check-square-o"></span> 提交</button>
+                    <a class="button border-main" href="<?php echo site_url().'manage/reset_pwd/'.$job_number ?>" onclick="return rset()"><span class="icon-edit"></span> 重置密码</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body></html>
+<script>
+function rset() {
+    if(confirm("是否重置"))
+    {
+        return true;
+    }else
+    {
+        return false;
+    }
+}
+</script>

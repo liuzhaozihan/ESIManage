@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="/style/css/pintuer.css">
+    <link rel="stylesheet" href="/style/css/admin.css">
+    <link rel="stylesheet" href="/style/css/layer.css">
+    <script src="/style/js/jquery.js"></script>
+    <script src="/style/js/pintuer.js"></script>
+    <script src="/style/js/layer.js"></script>
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>上传文件</strong></div>
+    <div class="body-content">
+        <form id="upload_form" method="post"  class="form-x" action="<?php echo site_url().'upload_file/upload_excle' ?>" enctype="multipart/form-data" >
+            <div class="form-group">
+                <div class="label">
+                    <label>文件：</label>
+                </div>
+                <div class="field">
+                    <input type="file" name="excle" value=" 浏览上传"  style="float:left;">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label></label>
+                </div>
+                <div class="field">
+                    <button class="button bg-main icon-check-square-o" type="submit" onclick="wait()" > 导入</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    function wait() {
+        layer.open({
+            type: 2,
+            content: '正在导入',
+            shadeClose:false
+        });
+    }
+    $("#upload_form").submit(function(e){
+        e.preventDefault();
+        var form_data = new FormData($('#upload_form')[0]);
+        var use_time = 75;
+        $.ajax({
+            url: $('#upload_form').attr('action'),
+            type: 'POST',
+            dataType: 'json',
+            data: form_data,
+            cache: false,
+            traditional: true, //用传统的方式来序列化数据
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                layer.closeAll();
+                if(data.code == 200){
+                    layer.open({
+                        content: '数据导入成功',
+                        btn: '我知道了',
+                        success: function(){}
+                    });
+                }else{
+                    layer.open({
+                        content: data.msg,
+                        btn: '我知道了',
+                        success: function(){}
+                    });
+                }
+            },
+            error:function(){
+                var timer = setInterval(function(){
+                    $.get('/upload_file/import_status', function(data){
+                        if(data.code == 200){
+                            layer.closeAll();
+                            clearInterval(timer);
+                            layer.open({
+                                content: '数据导入成功，用时 '+use_time+'秒',
+                                btn: '我知道了',
+                                success: function(){}
+                            });
+                        }else{
+                            use_time+=10;
+                            console.log(use_time);
+                        }
+                    }, 'json');
+                }, 10000)
+            }
+        });
+    });
+</script>
+</body>
+</html>

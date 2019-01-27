@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/style/css/pintuer.css">
+<link rel="stylesheet" href="/style/css/admin.css">
+<script src="/style/js/jquery.js"></script>
+<script src="/style/js/pintuer.js"></script>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head"><strong class="icon-reorder"> 内容列表</strong></div>
+  <div class="padding border-bottom">
+    <a href="<?php echo base_url().'manage/add_teacher' ?>" class="button border-yellow"><span class="icon-plus-square-o"> 添加用户</span></a>
+  </div>
+  <form method="post" action="<?php echo site_url().'manage/select_teacher' ?>" id="serchform">
+    <div class="padding border-bottom">
+      <ul class="search" style="padding-left:10px;">
+        <li>搜索方式：
+          <select name="select_mothod" class="input"  style="width:120px; line-height:17px; display:inline-block">
+            <option value="0">教师工号</option>
+            <option value="1">教师姓名</option>
+          </select>
+        </li>
+        <li>
+          <input type='text' placeholder='请输入搜索关键字' name='keywords' class='input' style='width:250px; line-height:17px;display:inline-block' value="<?php echo set_value('keywords') ?>"/>
+          <input type="submit" value="搜索" class="button border-main icon-search"/>
+        <li/>
+      </ul>
+    </div>
+  </form>
+  <table class="table table-hover text-center">
+    <tr>
+      <th width="10%">工号</th>
+      <th width="20%">姓名</th>
+      <th width="15%">院系</th>
+      <th width="20%">操作</th>
+    </tr>
+   <?php foreach($user as $v): ?>
+    <tr>
+      <td><?php echo $v['job_number'] ?></td>
+      <td><?php echo $v['name'] ?></td>
+      <td><?php echo $v['academy'] ?></td>
+      <td><div class="button-group">
+
+        <a class="button border-green" href="<?php echo site_url().'manage/fill_info/'.$v['job_number'] ?>" ><span class="icon-edit"></span> 编辑</a>
+      <a class="button border-red" href="<?php echo site_url().'manage/del_teacher/'.$v['job_number'] ?>" onclick="return del()"><span class="icon-trash-o"></span> 删除</a>
+      </div></td>
+    </tr>
+    <?php endforeach ?>
+    <tr>
+      <td colspan="4"><?php echo $links ?></td>
+    </tr>
+  </table>
+</div>
+<script type="text/javascript">
+  var msg="您确定要删除吗？";
+function del(){
+	if(confirm(msg)){
+	    return true;
+	}else{
+	    return false;
+    }
+}
+var msg1="您确定要重置吗？";
+function rset() {
+    if(confirm(msg1)){
+        return true;
+    }else{
+        return false;
+    }
+}
+</script>
+</body></html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>Nature信息</title>
+    <link rel="stylesheet" href="/style/css/pintuer.css">
+    <link rel="stylesheet" href="/style/css/admin.css">
+    <link rel="stylesheet" href="/style/css/layer.css">
+    <script src="/style/js/jquery.js"></script>
+    <script src="/style/js/pintuer.js"></script>
+    <script src="/style/js/layer.js"></script>
+</head>
+
+<body>
+<script>
+    layer.open({
+        title: [
+            '请设置您的姓名全拼',
+            'background-color: #FF4351; color:#fff; font-size: 30px'
+        ]
+        ,content: '<div class="body-content">' +
+            '           <div class="form-group">\n' +
+            '                <div class="label">\n' +
+            '                    <label>请设置您的姓名全拼，<span class="text-dot">注意姓和名字之间要加空格！</span><br>例如：您的名字是张学友，请输入zhang xueyou</label>\n' +
+            '                </div>\n' +
+            '                <div class="field">\n' +
+            '                    <input type="text" class="input w80" value="" name="title" placeholder="请输入您的姓名全拼" data-validate="required:请输入标题" />\n' +
+
+            '                </div>\n' +
+            '            </div>' +
+            '<button id="submit" class="button bg-main icon-check-square-o" type="submit"> 确定</button>' +
+            '       </div>'
+
+    });
+</script>
+<script>
+    alert(<?=s_year()?>);
+    $('#submit').click(function(){
+        alert(1);
+    });
+</script>
+
+</body>
+</html>

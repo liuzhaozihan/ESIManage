@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title></title>  
+    <link rel="stylesheet" href="/style/css/pintuer.css">
+    <link rel="stylesheet" href="/style/css/admin.css">
+    <script src="/style/js/jquery.js"></script>
+    <script src="/style/js/pintuer.js"></script>
+    <style type="text/css">
+      .long_td{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    </style>
+</head>
+<body>
+<form method="post" action="">
+  <div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder">我的文章</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>共检索到：<?php echo $count ?>&nbsp;&nbsp;篇</span>&emsp; &emsp;<span>新增引用次数总和：<?=$count_claim?>  次</span></div>
+    <div class="padding border-bottom">
+    </div>
+    <table class="table table-hover text-center" style="table-layout: fixed;">
+      <tr>
+        <th width="200">论文题目</th>
+        <th width="150">作者</th>
+        <th width="120">作者单位</th>
+        <th width="120">来源（期刊名称）</th>
+        <th>卷</th>
+        <th>期</th>
+        <th width="50">页</th>
+        <th width="80">出版年份</th>
+        <th width="80">学科领域</th>
+        <th width="80">影响因子</th>
+        <th width="80">统计时间</th>
+        <th width="100">新增引用次数</th>
+        <th>DOI</th>
+        <th width="180">操作</th>
+      </tr>
+      <?php foreach($article as $v): ?>
+        <tr>
+          <td title="<?=$v['title']?>" class="long_td"><?php echo $v['title'] ?></td>
+          <td title="<?=$v['author']?>" class="long_td"><?php echo $v['author'] ?></td>
+          <td title="<?=$v['address']?>" class="long_td"><?php echo $v['address'] ?></td>
+          <td title="<?=$v['source']?>" class="long_td"><?php echo $v['source'] ?></td>
+          <td title="<?=$v['roll']?>"><?php echo $v['roll'] ?></td>
+          <td title="<?=$v['period']?>"><?php echo $v['period'] ?></td>
+          <td title="<?=$v['page']?>" class="long_td"><?php echo $v['page'] ?></td>
+          <td title="<?=$v['year']?>"><?php echo $v['year'] ?></td>
+          <td title="<?=$v['subject']?>" class="long_td"><?php echo $v['subject'] ?></td>
+          <td title="<?=$v['impact_factor']?>"><?php echo $v['impact_factor'] ?></td>
+            <td title="<?=$v['update_time']?>"><?php echo $v['update_time'] ?></td>
+            <td title="<?=$v['increase_claim']?>"><?php echo $v['increase_claim'] ?></td>
+          <td title="<?=$v['doi']?>" class="long_td"><?php echo $v['doi'] ?></td>
+          <td><div class="button-group">
+              <a class="button border-main" href="<?php echo site_url().'article/check_article/'.$v['accession_number']?>"><span class="icon-edit"></span> 查看</a>
+              <a class="button border-red"  href="javascript:del('<?=$v['accession_number']?>')" ><span class="icon-times"></span> 退选</a>
+          </div></td>
+        </tr>
+      <?php endforeach ?>
+      <tr>
+        <td colspan="14"><?php echo $links ?></td>
+      </tr>
+    </table>
+  </div>
+</form>
+<script type="text/javascript">
+    var msg="您确定要退选吗？";
+    function del(id){
+        if(confirm(msg)){
+            location.href="<?php echo site_url().'article/remove_article/'?>"+id;
+        }
+    }
+</script>
+</body>
+</html>
