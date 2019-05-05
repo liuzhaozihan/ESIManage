@@ -11,6 +11,12 @@ class User_model extends CI_Model{
         return $this->db->get_where('user', $where_arr)
                          ->result_array();
     }
+
+    //查询所有的学院
+    public function get_user_academy(){
+        $sql = "SELECT DISTINCT academy FROM `user`;";
+        return $this->db->query($sql)->result_array();
+    }
     //查找所有教师
     public function get_user_list($where_arr, $offset, $per_page, $order_str){
         return $this->db->order_by($order_str)
@@ -30,6 +36,14 @@ class User_model extends CI_Model{
     {
         $data['user']=$this->db->get_where('user',array($col=>$key))->result_array();
         $data['count']=$this->db->from('user')->where($col,$key)->count_all_results();
+        return $data;
+    }
+    //按照学院查找教师
+    public function search_teacher_byacademy($col,$key){
+        $this->db->where_in($col,$key);
+        $this->db->order_by('academy','desc');
+        $data['user']=$this->db->get_where('user')->result_array();
+        $data['count']=$this->db->from('user')->where_in($col,$key)->count_all_results();
         return $data;
     }
     //删除教师
