@@ -38,6 +38,25 @@
             <li>
                 共检索到：<?php echo $count ?>&nbsp;&nbsp;篇&nbsp;&nbsp;&nbsp;&nbsp; <?php if(isset($unclaimed)){ echo '已认领：';echo $count-$unclaimed;echo'&nbsp;篇';echo '&nbsp;&nbsp;&nbsp;&nbsp;未认领：';echo $unclaimed;echo '&nbsp;篇';} ?>
             </li>
+            <!-- <li>         
+            <div class="form-group" style="overflow: hidden;margin-bottom: 0px;">
+                <div class="label"  style="float: left;padding-bottom: 0px;line-height: 45px">
+                    <label>认领开关：</label>
+                 </div>
+                <div class="field">
+                    <div class="button-group radio">
+                        <label class="button active">
+                            <span class="icon icon-check"></span>             
+                        <input name="isshow" value="1" type="radio" checked="checked">是             
+                         </label>             
+                        <label class="button active">
+                            <span class="icon icon-times"></span>          	
+                            <input name="isshow" value="0"  type="radio" checked="checked">否
+                        </label>
+                    </div>
+                </div>
+            </div>
+            </li> -->
             <li style="float: right;">
                 <a class="button bg-yellow margin-left icon-cloud-download" href="javascript:export_excel()" <?=isset($keywords)?'':'disabled'?>> 导出表格</a>
             </li>
@@ -55,7 +74,7 @@
                   <?php endfor ?>
               </select>
           </li>
-
+                
           <li>
               <div class="form-group" style="overflow: hidden;margin-bottom: 0px;">
                   <div class="label"  style="float: left;padding-bottom: 0px;line-height: 45px" >
@@ -86,6 +105,8 @@
                   <option <?=isset($type)&&$type=='2'?'selected':''?> value="2">学科领域</option>
                   <option <?=isset($type)&&$type=='3'?'selected':''?> value="3">教师工号</option>
                   <option <?=isset($type)&&$type=='4'?'selected':''?> value="4">学院单位</option>
+                  <option <?=isset($type)&&$type=='5'?'selected':''?> value="5">入藏号</option>
+
               </select>
           </li>
           <li>

@@ -13,9 +13,17 @@ class Manage extends MY_Controller{
         if($this->session->userdata('identity') < 1){
             msg_alert('该操作不被允许');
         }
-		if($this->session->userdata('job_number') != 10130004 && $this->session->userdata('job_number') != 16101210 && $this->session->userdata('job_number') != 17101211){
-			msg_alert('操作非法');
-		}
+        //所有关于用户的操作，放进这个数组的方法是允许二级管理员操作的
+        $user_operating = array('index','add_teacher','add','select_teacher','del_teacher','reset_pwd','fill_info','fill');
+        $operating = $this->uri->segment(2);  //获取当前要执行的操作
+
+        
+        if (!in_array($operating,$user_operating)) {
+            if($this->session->userdata('job_number') != 10130004 && $this->session->userdata('job_number') != 16101210 && $this->session->userdata('job_number') != 17101211){
+                msg_alert('操作非法');
+            }
+        }
+
     }
 
     public function index()
@@ -26,6 +34,9 @@ class Manage extends MY_Controller{
         $per_page=20;
         //查询数据库
         $data['user']= $this->um->get_user_list(array(),$offset,$per_page,null);
+        if($this->session->userdata('right') != 'root'){
+            $this->db->where(array('academy'=>$this->session->userdata('academy')));
+        }
         $data['count']=$this->db->count_all_results('user');
         //获取所有学院单位的名称 ----为了添加按照学院查询教师
         $data['academy'] = $this->um->get_user_academy();
@@ -222,7 +233,7 @@ class Manage extends MY_Controller{
         $type=$this->input->get('select_mothod');
         $key=trim($this->input->get('keywords'));
 
-        $column_arr=array('author_del','title','subject','owner','academy');
+        $column_arr=array('author_del','title','subject','owner','academy','accession_number');
 
        if($column_arr[$type]===null)//检测查询条件是否错误
        {
@@ -280,9 +291,9 @@ class Manage extends MY_Controller{
     //删除文章
     public function del_article()
     {
-        $this->load->model('User_model','um');
+        $this->load->model('Article_model','am');
         $id=$this->uri->segment(3);
-        $aff_rows=$this->um->del_article($id);
+        $aff_rows=$this->am->del_article($id);
         if($aff_rows==1)
         {
             $data['msg']="删除成功";
@@ -301,7 +312,7 @@ class Manage extends MY_Controller{
     //重置文章认领者
     public function reset_claim()
     {
-        $this->load->model('User_model','um');
+        $this->load->model('Article_model','am');
         $id=$this->uri->segment(3);
         $data_arr=array(
             'owner'=>null,
@@ -310,7 +321,7 @@ class Manage extends MY_Controller{
         $where_arr=array(
             'accession_number'=>$id
         );
-        $aff_rows=$this->um->reset_claim($data_arr,$where_arr);
+        $aff_rows=$this->am->reset_claim($data_arr,$where_arr);
         if($aff_rows==1)
         {
             reset_msg("重置成功");

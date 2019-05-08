@@ -81,6 +81,22 @@ class Article_model extends  CI_Model{
     {
        $this->db->update('thesis',$data,array('accession_number'=>$key));
     }
+    //-----下面的这两个方法是从user_model中换到这里的
+    //重置文章认领者
+    public function reset_claim($data_arr,$where_arr)
+    {
+        $this->db->update('thesis',$data_arr,$where_arr);
+        $aff_rows=$this->db->affected_rows();
+        return $aff_rows;
+    }
+    //删除文章
+    public function del_article($id)
+    {
+        $this->db->delete('thesis',array('accession_number'=>$id));
+        $aff_rows=$this->db->affected_rows();
+        return $aff_rows;
+    }
+    
     //thesis表中搜索文章，按文章标题，作者姓名，学科领域,教师工号
     public function select_article($col_name,$key,$where_arr=array())
    {

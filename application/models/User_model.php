@@ -7,6 +7,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Time: 11:21
  */
 class User_model extends CI_Model{
+
+    function __construct(){
+        parent::__construct();
+        if(!empty($this->session->userdata('right')) && $this->session->userdata('right') != 'root'){
+            $this->db->where(array('academy'=>$this->session->userdata('academy')));
+        }
+    }
+
     public function get_user_info($where_arr){
         return $this->db->get_where('user', $where_arr)
                          ->result_array();
@@ -42,6 +50,7 @@ class User_model extends CI_Model{
     public function search_teacher_byacademy($col,$key){
         $this->db->where_in($col,$key);
         $this->db->order_by('academy','desc');
+        $this->db->order_by('identity','desc');
         $data['user']=$this->db->get_where('user')->result_array();
         $data['count']=$this->db->from('user')->where_in($col,$key)->count_all_results();
         return $data;
@@ -68,20 +77,8 @@ class User_model extends CI_Model{
        $aff_rows=$this->db->affected_rows();
        return $aff_rows;
     }
-    //删除文章
-    public function del_article($id)
-    {
-       $this->db->delete('thesis',array('accession_number'=>$id));
-       $aff_rows=$this->db->affected_rows();
-       return $aff_rows;
-    }
-    //重置文章认领者
-    public function reset_claim($data_arr,$where_arr)
-    {
-        $this->db->update('thesis',$data_arr,$where_arr);
-        $aff_rows=$this->db->affected_rows();
-        return $aff_rows;
-    }
+
+    //这里原来的两个方法，del_article 和 reset_claim 现在放到aricle_model 中--二级管理员
 
     public function set_full_spell($full_spell, $where_arr){
         return $this->db->update('user', array('full_spell'=>$full_spell), $where_arr);

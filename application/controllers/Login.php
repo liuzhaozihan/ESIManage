@@ -38,6 +38,15 @@ class Login extends  CI_Controller
 
         if($login_status){ //登录成功
             $this->session->set_userdata(array('name'=>$user[0]['name'], 'job_number'=>$user[0]['job_number'], 'identity'=>$user[0]['identity'],'academy'=>$user[0]['academy'], 'full_spell'=>$user[0]['full_spell']));
+            if($user[0]['identity'] < 1){
+                $right = 'user';
+            }else{
+                $right = 'admin';
+                if(in_array($user[0]['job_number'],root_array())){
+                    $right = 'root';
+                }
+            }
+            $this->session->set_userdata(array('right'=>$right));
             $data['msg'] = '登陆成功';
             $data['jumpUrl']= site_url();
         }else{
