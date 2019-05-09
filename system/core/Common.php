@@ -897,5 +897,5 @@ function root_array(){
 }
 //当前统计年份
 function s_year(){
-    return 2017;
+    return 2018;
 }

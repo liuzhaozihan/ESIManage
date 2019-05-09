@@ -71,6 +71,13 @@ class Article_model extends  CI_Model{
         return $this->db->get_where('thesis', $where_arr)
             ->result_array();
     }
+    //单个查找 / 更新数据时使用，不受save的影响
+    public function get_article_info_for_upload_file($where_arr=array()){
+        $where_arr=array_merge($where_arr,$this->time_limit);
+
+        return $this->db->get_where('thesis', $where_arr)
+            ->result_array();
+    }
     //检测作者字段里有没有登录者的姓名
     public function check_authoe_del($key,$full_spell)
     {

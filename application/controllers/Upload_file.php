@@ -111,7 +111,7 @@ class Upload_file extends MY_Controller{
             'accession_number'=> $accession_number
         );
 
-        $article=$this->am->get_article_info($where_arr);//查找是否有这条记录
+        $article=$this->am->get_article_info_for_upload_file($where_arr);//查找是否有这条记录
         if($article)//存在
         {
             if(strpos($article[0]['history'],s_year() .":")===false)// 该记录存在且history未被更新
@@ -123,7 +123,7 @@ class Upload_file extends MY_Controller{
             }else  //该记录存在history已被更新，（上传失败重新上传）
             {
                 $info_arr2=array(             //更新信息
-                    'times_cited'=>$times_cited,
+                    'times_cited'=>$times_cited
                 );
             }
 
@@ -144,7 +144,8 @@ class Upload_file extends MY_Controller{
                 'times_cited'=>$times_cited,
                 'impact_factor'=>$impact_factor,
                 'author_del'=> $author_del,
-                'history'=>$history              //history字段追 每年的引用次数
+                'history'=>$history,              //history字段追 每年的引用次数
+                'save'=>1                         //新添加的文章，默认是1（开放），认领后0（封存）
             );
 
             $status=$this->db->insert('thesis',$info_arr1);           //对新数据进行插入
