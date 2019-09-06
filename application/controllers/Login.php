@@ -87,5 +87,5 @@ class Login extends  CI_Controller
         $data['waitSecond']=666;
         $this->load->view('admin/tips.html',$data);
     }
-	
+    
 }

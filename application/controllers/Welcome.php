@@ -20,9 +20,11 @@ class Welcome extends MY_Controller {
 	 */
 	public function index()
     {
-        $this->output->cache(5);
-        $data['identity']=$this->session->userdata('identity');
-        //p($identity);die;
+       
+		$data['identity']=$this->session->userdata('identity');
+		if($data['identity'] < 1){
+ 			// $this->output->cache(5);
+		}
         $this->load->view('admin/index.html',$data);
     }
 }

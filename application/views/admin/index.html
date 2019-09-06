@@ -22,7 +22,12 @@
 			</div>
 			<div class="head-l">&nbsp;&nbsp;
 				<a href="##" class="button button-little bg-blue"><span class="icon-wrench"></span> 清除缓存</a> &nbsp;&nbsp;
-				<a class="button button-little bg-red" href="<?=site_url('login/logout')?>"><span class="icon-power-off"></span> 退出登录</a>
+				<a class="button button-little bg-red" href="<?=site_url('login/logout')?>"><span class="icon-power-off"></span> 退出登录</a>&nbsp;&nbsp;
+				<?php if($identity == 1): $redis = new redis(); $redis->connect('127.0.0.1','6379');  if($redis->get('systemStatus') === false ){ ?>
+				<a id="openSystem" class="button button-little bg-green" href="javascript:(0);"><span class="icon-power-on"></span> 开放系统</a>&nbsp;&nbsp;
+				<?php } else if($redis->get('systemStatus') == 'on'){ ?>
+				<a class="button button-little bg-red" href="<?=site_url('user/del_redis')?>"><span class="icon-power-off"></span> 关闭系统</a>&nbsp;&nbsp;
+				<?php } else {} $redis->close(); endif;?>
 			</div>
 		</div>
 		<div class="leftnav">
@@ -136,6 +141,42 @@
 					}
                 });
 			}
+		</script>
+		<script>
+		// var html_from = '<form id="endTimeFrom" action="<?=site_url()."user/openSystem";?>" method="post"><input class="input " type="datetime-local" name="endTime" value="<?=date('Y-m-d',time()),'T',date('H:i',time());?>"></form>';
+		$('#openSystem').on('click',function(){
+			layer.open({
+			type: 1,
+			title: ['设置系统关闭时间',
+					'background-color: #55DD88; color:#fff; font-size: 20px'],
+			// btn: ['确定','取消'],
+			// yes:function(index, layero){
+			// 	$('#endTimeFrom').submit();
+			// 	// console.log('1');
+			// 	// alert('queding');
+
+			// },function(index, layero){
+			// 	alert('quxiao');
+			// },
+			skin: 'layui-layer-rim', //加上边框
+			area: ['230px', '40px'],
+			content: '\<\div style="padding:10px;">'+ 
+						'<form id="endTimeFrom" action="<?=site_url()."user/openSystem";?>" method="post">'+
+
+							'<div class="body-content">' +
+                        '           <div class="form-group">\n' +
+                        '                <div class="field">\n' +
+                        '                    <input type="datetime-local" class="input " style="width:88%" value="<?=date("Y-m-d",time()),"T",date("H:i",time());?>" name="endTime"  data-validate="required:请输姓名全拼" required>\n' +
+
+                        '                </div>\n' +
+                        '            </div>' +
+                        '<button id="submit" style="margin-left:46px;" class="button bg-main icon-check-square-o" type="submit"> 确定</button>' +
+                        '       </div>' +
+						'</form>'
+			 			+'\<\/div>',
+			// shadeClose: false
+			});
+		});
 		</script>
 	</body>
 </html>

@@ -86,4 +86,26 @@ class User extends MY_Controller{
         $data['jumpUrl']= site_url('welcome/index');
         $this->load->view('admin/tips.html',$data);
     }
+
+
+
+    //通过redis开放系统
+    public function openSystem(){
+        $redis = new redis();
+        $redis->connect('127.0.0.1','6379'); 
+        $time = strtotime($_POST['endTime']);
+        $redis->setEX('systemStatus',$time-time(),'on');
+        $redis->close();
+        echo "<script type='text/javascript'>window.history.back();</script>";
+    }
+
+
+    //关闭整个系统，禁止非管理员用户登录
+    public function del_redis(){
+        $redis = new redis();
+        $redis->connect('127.0.0.1','6379');        
+        $redis->del('systemStatus');
+        $redis->close();
+        echo "<script type='text/javascript'>window.history.back();</script>";
+    }
 }

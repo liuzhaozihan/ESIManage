@@ -15,10 +15,18 @@ class MY_Controller extends CI_Controller{
         if(empty($job_number) || strlen($job_number) != 8 || empty($name) || !is_numeric($identity)){
             header('location:'.site_url('login'));exit;
         }
-		
-		//认领结束关闭普通用户登录
-        if($identity != 1){
-            header('location:'.site_url('login/ended'));exit;
+        
+        //通过redis中systemStatus字段判断系统是否开放
+        $redis = new redis();
+        $redis->connect('127.0.0.1','6379');
+
+        if($redis->get('systemStatus') === false )
+        {
+            //认领结束关闭普通用户登录
+            if($identity != 1){
+                header('location:'.site_url('login/ended'));exit;
+            }
         }
+        $redis->close();
     }
 }
