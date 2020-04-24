@@ -86,6 +86,7 @@ class Login extends  CI_Controller
         $data['msg'] = '对不起，认领工作已结束<br>系统处于关闭状态暂不能登录。';
         $data['waitSecond']=666;
         $this->load->view('admin/tips.html',$data);
+        $this->session->sess_destroy(); //修复系统关闭时普通用户登录同一浏览器无法登录管理员的问题
     }
     
 }
