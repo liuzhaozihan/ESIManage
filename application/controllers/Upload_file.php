@@ -204,6 +204,7 @@ class Upload_file extends MY_Controller{
     //为user添加PHPExcel
     public function info_import_user($filename,$ext='xls'){
         $this->load->library('PHPExcel');
+        $this->load->library('pwdhash'); //载入phpass加密类
         // $PHPExcel = new PHPExcel();
         // $filename = "./uploads/user.xls";
 
@@ -256,7 +257,9 @@ class Upload_file extends MY_Controller{
             //将读取出来的数据放进Redis
             $job_number = $data['A'];
             $data['K']=null;
-            $data['L']='a'.$job_number;
+            //$data['L']='a'.$job_number;
+            //修复导入excel，默认密码错误的问题
+            $data['L']=$this->pwdhash->HashPassword('a'.$job_number); 
             $data['M']= 0;
             for($currentColumn='A';$currentColumn<='M';$currentColumn++){
                 $redis->set('user:job_number:'.$job_number.':'.$currentColumn,$data[$currentColumn]);
